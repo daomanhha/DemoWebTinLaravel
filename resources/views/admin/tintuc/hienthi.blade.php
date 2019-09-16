@@ -18,21 +18,30 @@
                         <tr align="center">
                             <th>ID</th>
                             <th>Name</th>
-                            <th>TenKhongDau</th>
+                            <th>TomTat</th>
+                            <th>NoiDung</th>
+                            <th>Hinh</th>
+                            <th>SoLuotXem</th>
+                            <th>NoiBat</th>
+                            <th>LoaiTin</th>
                             <th>Delete</th>
                             <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
-                         @if(isset($theLoais))
-                            @foreach($theLoais as $theLoai)
+                         @if(isset($tintucs))
+                            @foreach($tintucs as $tt)
                                 <tr class="odd gradeX" align="center">
-                                    <td>{{$theLoai->id}}</td>
-                                    <td>{{$theLoai->Ten}}</td>
-                                    <td>{{$theLoai->TenKhongDau}}</td>
-                                    <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/theloai/sua/{{$theLoai->id}}">Edit</a></td>
-                                    <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/theloai/delete/{{$theLoai->id}}" onclick="return confirm('Bạn muốn có muốn xóa không?')"> Delete</a></td>
-                                    
+                                    <td>{{$tt->id}}</td>
+                                    <td>{{$tt->TieuDe}}</td>
+                                    <td>{{$tt->TomTat}}</td>
+                                    <td>{!!$tt->NoiDung!!}</td>
+                                    <td>{{$tt->Hinh}}</td>
+                                    <td>{{$tt->SoLuotXem}}</td>
+                                    <td>{{$tt->NoiBat}}</td>
+                                    <td>{{$tt->loaitin->Ten}}</td>
+                                    <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/theloai/sua/{{$tt->id}}">Edit</a></td>
+                                    <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/theloai/delete/{{$tt->id}}" onclick="return confirm('Bạn muốn có muốn xóa không?')"> Delete</a></td>
                                 </tr>
                             @endforeach
                          @endif

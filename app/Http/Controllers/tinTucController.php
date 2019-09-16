@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\TheLoai;
 use App\LoaiTin;
 use App\TinTuc;
+use Illuminate\Support\Str;
 
 class tinTucController extends Controller
 {
@@ -29,22 +30,43 @@ class tinTucController extends Controller
     }
     public function postthem(Request $req){
         $this->validate($req,[
-            'loaitin' => 'required|unique:LoaiTin,Ten|min:3|max:100',
-            'idTheLoai' => 'required' 
+            'TheLoai' => 'required',
+            'LoaiTin' => 'required',
+            'tieude' => 'required|min:3|max:100',
+            'tomtat' => 'required|min:3'
         ],
         [
-            'loaitin.required' => 'Bạn chưa nhập loại tin',
-            'loaitin.unique' => 'Đã tồn tại loại tin',
-            'loaitin.max' => 'từ 3 - 100 ký tự',
-            'loaitin.min' => 'từ 3 - 100 ký tự',
-            'idTheLoai.required' => 'Chưa chọn thể loại'
+            'TheLoai.required'=> 'Mời bạn chọn thể loại',
+            'LoaiTin.required' => 'Mời bạn chọn loại tin',
+            'tieude.required' => 'Mời bạn nhập tiêu đề',
+            'tomtat.required' => 'Mời bạn nhập tóm tắt',
+            'tieude.min'=> 'tiêu đề lớn hơn 3 ký tự',
+            'tomtat.min' => 'tóm tắt lớn hơn 3 ký tự'
         ]);
-        $loaitin = new LoaiTin;
-        $loaitin->Ten = $req->loaitin;
-        $loaitin->TenKhongDau = $req->loaitin;
-        $loaitin->idTheLoai = $req->idTheLoai;
-        $loaitin->save();
-        return redirect('admin/loaitin/them')->with('thongbao', 'Bạn đã thêm thành công');
+        $tintuc = new TinTuc;
+        $tintuc->TieuDe = $req->tieude;
+        $tintuc->TieuDeKhongDau = $req->tieude;
+        $tintuc->TomTat = $req->tomtat;
+        $tintuc->NoiDung = $req->tomtat;
+        $tintuc->idLoaiTin = $req->LoaiTin;
+        if($req->hasFile('img')){
+            $file = $req->file('img');
+            $name = $file->getClientOriginalName();
+            $ten = Str::random(4).'_'.$name;
+            while(file_exists('upload/tintuc/'.$ten)){
+                $ten = Str::random(4).'_'.$name;
+            }
+            $file->move(
+                'upload/tintuc',
+                $ten);
+            $tintuc->Hinh = $ten;
+        }else{
+            $tintuc->Hinh = "";
+        }
+        $tintuc->NoiBat = $req->rdoStatus;
+        $tintuc->SoLuotXem = 0;
+        $tintuc->save();
+        return redirect('admin/tintuc/them')->with('thongbao', 'Bạn đã thêm thành công');
     }
     public function getsua($id){
     	$loaitin = LoaiTin::find($id);
@@ -75,7 +97,7 @@ class tinTucController extends Controller
     public function delete($id){
         $tintuc = TinTuc::find($id);
         $tintuc->delete();
-        return redirect('admin/loaitin/hienthi')->with('thongbao', 'Bạn đã xóa thành công');
+        return redirect('admin/tintuc/hienthi')->with('thongbao', 'Bạn đã xóa thành công');
     }
 
 }

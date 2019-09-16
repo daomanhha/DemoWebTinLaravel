@@ -40,8 +40,8 @@
                                     <td>{{$tt->SoLuotXem}}</td>
                                     <td>{{$tt->NoiBat}}</td>
                                     <td>{{$tt->loaitin->Ten}}</td>
-                                    <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/theloai/sua/{{$tt->id}}">Edit</a></td>
-                                    <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/theloai/delete/{{$tt->id}}" onclick="return confirm('Bạn muốn có muốn xóa không?')"> Delete</a></td>
+                                    <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/tintuc/sua/{{$tt->id}}">Edit</a></td>
+                                    <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/tintuc/delete/{{$tt->id}}" onclick="return confirm('Bạn muốn có muốn xóa không?')"> Delete</a></td>
                                 </tr>
                             @endforeach
                          @endif

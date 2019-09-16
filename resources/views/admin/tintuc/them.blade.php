@@ -22,12 +22,12 @@
                             {{Session('thongbao')}}
                         </div>
                     @endif
-                    <form action="" method="POST">
+                    <form action="" method="POST" enctype="multipart/form-data">
                         @csrf
                         @if(isset($theloais))
                             <div class="form-group">
                                 <label>TheLoai</label>
-                                <select class="form-control" name="idTheLoai" id= "TheLoai">
+                                <select class="form-control" name="TheLoai" id= "TheLoai">
                                         <option value="">Mời chọn thể loại</option>
                                         @foreach($theloais as $tl)
                                             <option value="{{$tl->id}}">{{$tl->Ten}}</option>
@@ -37,15 +37,30 @@
                         @endif
                         <div class="form-group">
                             <label>LoaiTin</label>
-                            <select class="form-control" name="idTheLoai" id = "LoaiTin">
+                            <select class="form-control" name="LoaiTin" id = "LoaiTin">
                                 <option value="">Mời chọn thể loại</option>
                             </select>
                         </div>
-
                         <div class="form-group">
-                            <label>TinTuc</label>
-                            <input class="form-control" name="loaitin" placeholder="Please Enter Category Name" />
+                            <label>Tiêu Đề</label>
+                            <input class="form-control" name="tieude" placeholder="Mời Nhập tiêu đề" />
                         </div>
+                        <div class="form-group">
+                            <label>Tóm Tắt</label>
+                            <textarea name="tomtat" id="demo" class="form-control ckeditor" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="file" name="img">Nhập file</label>
+                        </div>
+                        <div class="form-group">
+                                <label>Nổi Bật:</label>
+                                <label class="radio-inline">
+                                    <input name="rdoStatus" value="1" checked type="radio">Nổi bật
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="rdoStatus" value="0" type="radio">Không nối bật
+                                </label>
+                            </div>
                         <button type="submit" class="btn btn-default">Them</button>
                         <button type="reset" class="btn btn-default">Reset</button>
                     <form>

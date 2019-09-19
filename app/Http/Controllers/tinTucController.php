@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\TheLoai;
 use App\LoaiTin;
 use App\TinTuc;
+use App\Comment;
 use Illuminate\Support\Str;
 
 class tinTucController extends Controller
@@ -72,27 +73,52 @@ class tinTucController extends Controller
     	$loaitin = LoaiTin::find($id);
         $theloai = $loaitin->theloai;
         $theloais = TheLoai::all();
-        return view('admin.loaitin.sua',
+        $comments = Comment::where('idTinTuc',$id)->get();
+        return view('admin.tintuc.sua',
             ['loaitin' => $loaitin,
             'theloai' => $theloai,
-            'theloais' => $theloais]);
+            'theloais' => $theloais,
+            'comments' => $comments]);
     }
     public function postsua(Request $req, $id){
-    	$this->validate($req,[
-            'loaitin' => 'required|unique:LoaiTin,Ten|min:3|max:100', 
+         $this->validate($req,[
+            'TheLoai' => 'required',
+            'LoaiTin' => 'required',
+            'tieude' => 'required|min:3|max:100',
+            'tomtat' => 'required|min:3'
         ],
         [
-            'loaitin.required' => 'Bạn chưa nhập loại tin',
-            'loaitin.unique' => 'Đã tồn tại loại tin',
-            'loaitin.max' => 'từ 3 - 100 ký tự',
-            'loaitin.min' => 'từ 3 - 100 ký tự',
+            'TheLoai.required'=> 'Mời bạn chọn thể loại',
+            'LoaiTin.required' => 'Mời bạn chọn loại tin',
+            'tieude.required' => 'Mời bạn nhập tiêu đề',
+            'tomtat.required' => 'Mời bạn nhập tóm tắt',
+            'tieude.min'=> 'tiêu đề lớn hơn 3 ký tự',
+            'tomtat.min' => 'tóm tắt lớn hơn 3 ký tự'
         ]);
-        $loaitin = LoaiTin::find($id);
-        $loaitin->Ten = $req->loaitin;
-        $loaitin->TenKhongDau = $req->loaitin;
-        $loaitin->idTheLoai = $req->idTheLoai;
-        $loaitin->save();
-        return redirect('admin/loaitin/hienthi')->with('thongbao', 'Bạn đã sửa thành công');
+        $tintuc = new TinTuc;
+        $tintuc->TieuDe = $req->tieude;
+        $tintuc->TieuDeKhongDau = $req->tieude;
+        $tintuc->TomTat = $req->tomtat;
+        $tintuc->NoiDung = $req->tomtat;
+        $tintuc->idLoaiTin = $req->LoaiTin;
+        if($req->hasFile('img')){
+            $file = $req->file('img');
+            $name = $file->getClientOriginalName();
+            $ten = Str::random(4).'_'.$name;
+            while(file_exists('upload/tintuc/'.$ten)){
+                $ten = Str::random(4).'_'.$name;
+            }
+            $file->move(
+                'upload/tintuc',
+                $ten);
+            $tintuc->Hinh = $ten;
+        }else{
+            $tintuc->Hinh = "";
+        }
+        $tintuc->NoiBat = $req->rdoStatus;
+        $tintuc->SoLuotXem = 0;
+        $tintuc->save();
+        return redirect('admin/tintuc/them')->with('thongbao', 'Bạn đã sửa thành công');	
     }
     public function delete($id){
         $tintuc = TinTuc::find($id);

@@ -11,6 +11,6 @@ class Comment extends Model
     	return $this->belongsTo('App\TinTuc', 'idTinTuc', 'id');
     }
     public function user(){
-    	return $this->belongsTo('App\Usser', 'idUser', 'id');
+    	return $this->belongsTo('App\User', 'idUser', 'id');
     }
 }

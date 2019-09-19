@@ -39,7 +39,7 @@ class theLoaiController extends Controller
     public function postsua(Request $req,$id){
     	$theLoai = TheLoai::find($id);
     	$this->validate($req,[
-    		'Name' => 'required |unique:TheLoai,Ten| min : 3 | max : 100' //unique:TênModel,field chú ý dấu cách
+    		'Name' => 'required |unique:TheLoai,Ten| min : 3 | max : 100' //unique:tênbảngko phan biet hoa thuong,field chú ý dấu cách
     	],
     	[
     		'Name.required'=>'Bạn chưa nhập tên',

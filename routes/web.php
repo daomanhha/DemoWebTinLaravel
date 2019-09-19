@@ -38,7 +38,10 @@ Route::get('thu',function(){
 });
 
 //group Admin
-Route::group(['prefix' => 'admin'],function(){
+Route::get('admin/login', 'userController@getLogin');
+Route::post('admin/login', 'userController@postLogin');
+Route::get('admin/logout', 'userController@Logout');
+Route::group(['prefix' => 'admin', 'middleware' => 'authCheck'],function(){
 	Route::group(['prefix' => 'theloai'],function(){
 		//admin/theloai/hienthi
 		Route::get('hienthi','theLoaiController@getItem')->name('theloai_hienthi');
@@ -66,5 +69,12 @@ Route::group(['prefix' => 'admin'],function(){
 	});
 	Route::group(['prefix' => 'ajax'],function(){
 		Route::get('tintuc/{id}', 'tinTucController@getajax');
+	});
+	Route::group(['prefix' => 'user'],function(){
+		Route::get('hienthi', 'userController@getItem');
+		Route::get('sua/{id}', 'userController@getsua');
+		Route::post('sua/{id}', 'userController@postsua');
+		Route::get('them', 'userController@getthem');
+		Route::post('them', 'userController@postthem');
 	});
 });
